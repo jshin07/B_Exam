@@ -6,7 +6,7 @@ from datetime import date
 import re
 import bcrypt
 
-
+##Added .lower()
 
 
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
@@ -35,7 +35,7 @@ class UserManager(models.Manager):
             return False, message
         else:
             hashed= bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-            user= User.userManager.create(first_name=first_name, last_name=last_name, email=email, password=hashed, birthday=birthday)
+            user= User.userManager.create(first_name=first_name, last_name=last_name, email=email.lower(), password=hashed, birthday=birthday)
         return True, user
 
 
@@ -50,7 +50,7 @@ class UserManager(models.Manager):
         if len(message)>0:
             return False, message
         else:
-            user=User.userManager.filter(email=email)
+            user=User.userManager.filter(email=email.lower())
             if len(user)<1:
                 message.append('Please register')
                 return False, message
